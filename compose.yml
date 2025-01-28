@@ -11,7 +11,7 @@ services:
     build: .
     image: ghcr.io/digininja/dvwa:latest
     # Change `always` to `build` to build from local source
-    pull_policy: always
+    pull_policy: build
     environment:
       - DB_SERVER=db
     depends_on:
