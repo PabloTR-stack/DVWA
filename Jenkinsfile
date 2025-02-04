@@ -221,7 +221,7 @@ pipeline {
                             def zap_r = sh(returnStdout: true, script:  """curl -o - -X POST \
                             -H 'accept: application/json' \
                             -H 'Content-Type: multipart/form-data' \
-                            -H 'Authorization: Token $API_KEY' \
+                            -H 'Authorization: Token """+API_KEY+"""' \
                             -F 'engagement=$engagement_id' \
                             -F 'scan_date=$end_date' \
                             -F 'engagement_end_date=$end_date' \
@@ -234,7 +234,7 @@ pipeline {
                             def sq_r = sh(returnStdout: true, script:  """curl -o - -X POST \
                             -H 'accept: application/json' \
                             -H 'Content-Type: multipart/form-data' \
-                            -H 'Authorization: Token $API_KEY' \
+                            -H 'Authorization: Token """+API_KEY+"""' \
                             -F 'engagement=$engagement_id' \
                             -F 'scan_date=$end_date' \
                             -F 'engagement_end_date=$end_date' \
@@ -247,7 +247,7 @@ pipeline {
                             // def dc_r = sh(returnStdout: true, script:  """curl -o - -X POST \
                             // -H 'accept: application/json' \
                             // -H 'Content-Type: multipart/form-data' \
-                            // -H 'Authorization: Token $API_KEY' \
+                            // -H 'Authorization: Token """+API_KEY+"""' \
                             // -F 'engagement=$engagement_id' \
                             // -F 'scan_date=$end_date' \
                             // -F 'engagement_end_date=$end_date' \
