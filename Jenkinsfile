@@ -78,10 +78,13 @@ pipeline {
                 container('jnlp') {
                     withCredentials([string(credentialsId: 'SQ_TOKEN', variable: 'SQ_TOKEN'), string(credentialsId: 'SQ_URL', variable: 'SQ_URL'), string(credentialsId: 'SQU_TOKEN', variable: 'SQU_TOKEN')]) {
                         script{
-                        //sh 'echo QG'
                         def qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
-                        def ok = new JsonSlurper().parseText(qg).projectStatus.status
-                        sh 'echo "'+ok+'"'
+                        def status = new JsonSlurper().parseText(qg).projectStatus.status
+                        while (for i = 0 ; status != 'OK' && i < 6 ; i++) {
+                            qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
+                            status = new JsonSlurper().parseText(qg).projectStatus.status
+                            sleep 10
+                        }
                     // timeout(time: 1, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
                     //         def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
                     //         if (qg.status != 'OK') {
@@ -145,6 +148,7 @@ pipeline {
                             i = json.status.toInteger()
                             response = null
                             json = null
+                            sleep 10
                         }
 
                         
@@ -178,6 +182,7 @@ pipeline {
                             i = json.status.toInteger()
                             response = null
                             json = null
+                            sleep 10
                         }
 
                         response = httpRequest zap_url + '/XML/core/view/alerts/?apikey=' + ZAP_TOKEN + '&baseurl=' + target_url + '&start=0&count=10'
