@@ -76,7 +76,8 @@ pipeline {
         stage("Quality Gate"){
             steps{
                 container('jnlp') {
-                    script{
+                    withCredentials([string(credentialsId: 'SQ_TOKEN', variable: 'SQ_TOKEN'), string(credentialsId: 'SQ_URL', variable: 'SQ_URL'), string(credentialsId: 'SQU_TOKEN', variable: 'SQU_TOKEN')]) {
+                        script{
                         //sh 'echo QG'
                         def qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
                         sh 'echo "'+qg+'"'
@@ -86,6 +87,7 @@ pipeline {
                     //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     //         }
                     //     }
+                        }
                     }
                 }
             }
