@@ -104,7 +104,7 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'dependency-check.sh'
-                    sh('wget https://github.com/jeremylong/DependencyCheck/releases/download/v12.0.2/dependency-check-12.0.2-release.zip')
+                    //sh('wget https://github.com/jeremylong/DependencyCheck/releases/download/v12.0.2/dependency-check-12.0.2-release.zip')
                     sh('ls')
                     // dependencyCheck additionalArguments: ''' 
                     //             -o './'
