@@ -77,7 +77,9 @@ pipeline {
             steps{
                 container('jnlp') {
                     script{
-                        sh 'echo QG'
+                        //sh 'echo QG'
+                        def qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
+                        sh 'echo "'+qg+'"'
                     // timeout(time: 1, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
                     //         def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
                     //         if (qg.status != 'OK') {
