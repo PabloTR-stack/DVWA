@@ -25,6 +25,8 @@ pipeline {
             containerPort: 4280
           - name: sock
             containerPort: 2376
+        - name: dc
+          image: showcasepreprodacr.azurecr.io/dc:latest
         - name: jnlp
           image: jenkins/inbound-agent:latest
         - name: zap
@@ -216,8 +218,7 @@ pipeline {
                             //subir los artefactos del pipeline
                             def engagement_id = new JsonSlurper().parseText(engagement_r).id
 
-                            // Análisis ZAP  
-                            sh 'ls'
+                            // Análisis ZAP 
                             def zap_r = sh(returnStdout: true, script:  """curl -o - -X POST \
                             -H 'accept: application/json' \
                             -H 'Content-Type: multipart/form-data' \
