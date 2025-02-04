@@ -102,8 +102,8 @@ pipeline {
         }
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
-                container('jnlp') {
-                    sh 'echo DC'
+                container('dc') {
+                    sh 'ls'
                     // dependencyCheck additionalArguments: ''' 
                     //             -o './'
                     //             -s './'
