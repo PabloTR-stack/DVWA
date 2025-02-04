@@ -27,6 +27,7 @@ pipeline {
             containerPort: 2376
         - name: dc
           image: showcasepreprodacr.azurecr.io/dc:latest
+          command: ["sleep infinity"]
         - name: jnlp
           image: jenkins/inbound-agent:latest
         - name: zap
