@@ -80,7 +80,7 @@ pipeline {
                         script{
                         def qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
                         def status = new JsonSlurper().parseText(qg).projectStatus.status
-                        while (for i = 0 ; status != 'OK' && i < 6 ; i++) {
+                        for (i = 0 ; status != 'OK' && i < 6 ; i++) {
                             qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
                             status = new JsonSlurper().parseText(qg).projectStatus.status
                             sleep 10
