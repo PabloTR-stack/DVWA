@@ -103,7 +103,7 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh 'ls'
+                    sh 'dependency-check/bin/dependency-check.sh'
                     // dependencyCheck additionalArguments: ''' 
                     //             -o './'
                     //             -s './'
