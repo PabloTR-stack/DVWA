@@ -103,6 +103,7 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
+                    sh "ls"
                     sh "dependency-check.sh -o \'./\' -s \'./\' -f \'JSON\'"
                     //sh('wget https://github.com/jeremylong/DependencyCheck/releases/download/v12.0.2/dependency-check-12.0.2-release.zip')
                     //sh('ls')
