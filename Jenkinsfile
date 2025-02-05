@@ -88,13 +88,7 @@ pipeline {
                             qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
                             status = new JsonSlurper().parseText(qg).projectStatus.status
                             sleep 10
-                        }
-                    // timeout(time: 1, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                    //         def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                    //         if (qg.status != 'OK') {
-                    //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                    //         }
-                    //     }
+                            }
                         }
                     }
                 }
@@ -103,18 +97,10 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh "ls"
                     sh "dependency-check.sh -o \'./\' -s \'./\' -f \'JSON\'"
-                    //sh('wget https://github.com/jeremylong/DependencyCheck/releases/download/v12.0.2/dependency-check-12.0.2-release.zip')
-                    //sh('ls')
-                    // dependencyCheck additionalArguments: ''' 
-                    //             -o './'
-                    //             -s './'
-                    //             -f 'JSON' 
-                    //             --prettyPrint''', odcInstallation: 'owasp_dc'
-                    
-                    // dependencyCheckPublisher pattern: 'dependency-check-report.json'
-                    // archiveArtifacts artifacts: 'dependency-check-report.json'
+                    sh "ls"
+                    dependencyCheckPublisher pattern: 'dependency-check-report.json'
+                    archiveArtifacts artifacts: 'dependency-check-report.json'
                 }
             }
         } 
