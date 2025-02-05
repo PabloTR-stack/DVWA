@@ -97,9 +97,8 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'JSON\'"
-                    sh "ls"
-                    archiveArtifacts artifacts: 'dependency-check-report.json'
+                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'XML\'"
+                    archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
         } 
@@ -243,7 +242,7 @@ pipeline {
                             -F 'scan_date=$end_date' \
                             -F 'engagement_end_date=$end_date' \
                             -F 'product_name=DVWA' \
-                            -F 'file=@dependency-check-report.json;type=application/json' \
+                            -F 'file=@dependency-check-report.xml;type=application/xml' \
                             -F 'scan_type=Dependency Check Scan' \
                             $dd_URL/api/v2/import-scan/""")
                         }
