@@ -26,7 +26,7 @@ pipeline {
           - name: sock
             containerPort: 2376
         - name: dc
-          image: nbaars/owasp-dependency-check-as-one
+          image: docker push showcasepreprodacr.azurecr.io/cached_dc:latest
           command: ["sleep"]
           args: ["infinity"]
         - name: jnlp
@@ -103,7 +103,7 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh "dependency-check-o './' -s './'-f 'JSON'"
+                    sh "dependency-check.sh -o './' -s './'-f 'JSON'"
                     //sh('wget https://github.com/jeremylong/DependencyCheck/releases/download/v12.0.2/dependency-check-12.0.2-release.zip')
                     //sh('ls')
                     // dependencyCheck additionalArguments: ''' 
