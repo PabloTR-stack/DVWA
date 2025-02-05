@@ -99,7 +99,6 @@ pipeline {
                 container('dc') {
                     sh "dependency-check.sh -o \'./\' -s \'./\' -f \'JSON\'"
                     sh "ls"
-                    dependencyCheckPublisher pattern: 'dependency-check-report.json'
                     archiveArtifacts artifacts: 'dependency-check-report.json'
                 }
             }
@@ -236,17 +235,17 @@ pipeline {
                             $dd_URL/api/v2/import-scan/""")
 
                             //Análisis DC
-                            // def dc_r = sh(returnStdout: true, script:  """curl -o - -X POST \
-                            // -H 'accept: application/json' \
-                            // -H 'Content-Type: multipart/form-data' \
-                            // -H 'Authorization: Token """+API_KEY+"""' \
-                            // -F 'engagement=$engagement_id' \
-                            // -F 'scan_date=$end_date' \
-                            // -F 'engagement_end_date=$end_date' \
-                            // -F 'product_name=DVWA' \
-                            // -F 'file=@dependency-check-report.json;type=application/json' \
-                            // -F 'scan_type=Dependency Check Scan' \
-                            // $dd_URL/api/v2/import-scan/""")
+                            def dc_r = sh(returnStdout: true, script:  """curl -o - -X POST \
+                            -H 'accept: application/json' \
+                            -H 'Content-Type: multipart/form-data' \
+                            -H 'Authorization: Token """+API_KEY+"""' \
+                            -F 'engagement=$engagement_id' \
+                            -F 'scan_date=$end_date' \
+                            -F 'engagement_end_date=$end_date' \
+                            -F 'product_name=DVWA' \
+                            -F 'file=@dependency-check-report.json;type=application/json' \
+                            -F 'scan_type=Dependency Check Scan' \
+                            $dd_URL/api/v2/import-scan/""")
                         }
                     }
                 }
