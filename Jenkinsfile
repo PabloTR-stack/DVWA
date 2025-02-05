@@ -26,7 +26,7 @@ pipeline {
           - name: sock
             containerPort: 2376
         - name: dc
-          image: docker push showcasepreprodacr.azurecr.io/cached_dc:latest
+          image: showcasepreprodacr.azurecr.io/cached_dc:latest
           command: ["sleep"]
           args: ["infinity"]
         - name: jnlp
