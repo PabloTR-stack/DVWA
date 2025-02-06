@@ -125,11 +125,12 @@ pipeline {
                         //wait for the passive scan to finish
                         def status_r = httpRequest zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
                         def status_j = new JsonSlurper().parseText(status_r.content)
+                        
+                            println("helloww")
                         def i = 0
                         while(i < 100){
                             status_r = null
                             status_j = null
-                            println("helloww")
                             status_r = httpRequest url: zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
                             status_j = new JsonSlurper().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
