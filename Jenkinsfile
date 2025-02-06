@@ -131,7 +131,7 @@ pipeline {
                             status_j = new JsonSlurper().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
                             i = status_j.status.toInteger()
-                            sleep 10
+                            //sleep 10
                         }   
 
                         //response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
