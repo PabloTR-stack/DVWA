@@ -121,7 +121,7 @@ pipeline {
                         //start passive scan
                         def spider_r = httpRequest zap_url + '/JSON/spider/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&contextName=&recurse='
                         def spider_j = new JsonSlurper().parseText(spider_r.content)
-                        def scan_id = json.scan
+                        def scan_id = spider_j.scan
                         //wait for the passive scan to finish
                         def status_r = httpRequest zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
                         def status_j = new JsonSlurper().parseText(status_r.content)
