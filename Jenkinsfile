@@ -129,10 +129,11 @@ pipeline {
                         while(i < 100){
                             status_r = null
                             status_j = null
+                            println("helloww")
                             status_r = httpRequest url: zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
                             status_j = new JsonSlurper().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
-                            i = json.status.toInteger()
+                            i = status_j.status.toInteger()
                             sleep 10
                         }   
 
