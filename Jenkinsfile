@@ -1,6 +1,6 @@
 #!groovy
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 
@@ -120,7 +120,7 @@ pipeline {
                         def target_url = "http://jenkins-pl-pod-service.reginleif.svc.cluster.local:4280"
                         //start passive scan
                         def spider_r = httpRequest zap_url + '/JSON/spider/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&contextName=&recurse='
-                        def scan_id = new JsonSlurper().parseText(spider_r.content).scan
+                        def scan_id = new JsonSlurperClassic().parseText(spider_r.content).scan
                         //wait for the passive scan to finish
                         def status_r,status_j
                         def i = 0
@@ -128,7 +128,7 @@ pipeline {
                             status_r = null
                             status_j = null
                             status_r = httpRequest url: zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
-                            status_j = new JsonSlurper().parseText(status_r.content)
+                            status_j = new JsonSlurperClassic().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
                             i = status_j.status.toInteger()
                             //sleep 10
@@ -140,14 +140,14 @@ pipeline {
                         //start the active scan
                         ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
                         scan_id = null
-                        scan_id = new JsonSlurper().parseText(ascan_r.content).scan
+                        scan_id = new JsonSlurperClassic().parseText(ascan_r.content).scan
                         //wait for the active scan to finish
                         i = 0
                         while(i < 100){
                             status_r = null
                             status_j = null
                             status_r = httpRequest url: zap_url + '/JSON/ascan/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
-                            status_j = new JsonSlurper().parseText(status_r.content)
+                            status_j = new JsonSlurperClassic().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
                             i = status_j.status.toInteger()
                             sleep 10
