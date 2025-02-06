@@ -115,72 +115,52 @@ pipeline {
                 container('jnlp') {
                     withCredentials([string(credentialsId: 'ZAP_TOKEN', variable: 'ZAP_TOKEN')]) {
                         script{
+                        //define URLs
                         def zap_url = "http://jenkins-pl-pod-service.reginleif.svc.cluster.local:8080"
                         def target_url = "http://jenkins-pl-pod-service.reginleif.svc.cluster.local:4280"
-                        def response = httpRequest zap_url + '/JSON/spider/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&contextName=&recurse='
-                        def json = new JsonSlurper().parseText(response.content)
-                        println("Scan ID: ${json.scan}")
+                        //start passive scan
+                        def spider_r = httpRequest zap_url + '/JSON/spider/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&contextName=&recurse='
+                        def spider_j = new JsonSlurper().parseText(spider_r.content)
                         def scan_id = json.scan
-
-                        response = null
-                        json = null
-
-                        response = httpRequest zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
-                        json = new JsonSlurper().parseText(response.content)
-
-                        response = null
-                        json = null
-
+                        //wait for the passive scan to finish
+                        def status_r = httpRequest zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
+                        def status_j = new JsonSlurper().parseText(status_r.content)
                         def i = 0
                         while(i < 100){
-                            response = httpRequest url: zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
-                            json = new JsonSlurper().parseText(response.content)
-                            if (i != json.status.toInteger()) println("Progress: ${json.status}%")
+                            status_r = null
+                            status_j = null
+                            status_r = httpRequest url: zap_url + '/JSON/spider/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
+                            status_j = new JsonSlurper().parseText(status_r.content)
+                            if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
                             i = json.status.toInteger()
-                            response = null
-                            json = null
                             sleep 10
-                        }
+                        }   
 
-                        
+                        //response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
+                        //writeFile (file: "spider_results.json", text: response.content)
 
-                        response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
-                        writeFile (file: "spider_results.json", text: response.content)
-                    
-                    
-                        //def spider_results = json
-                        response = null
-                        json = null
-
-                        response = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
-                        json = new JsonSlurper().parseText(response.content)
-                        println("Active scan id: ${json.scan}") 
-                        
-                        scan_id = json.scan
-                        response = null
-                        json = null
-                        
-                        response = httpRequest zap_url + '/JSON/ascan/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
-                        json = new JsonSlurper().parseText(response.content)
-
-                        response = null
-                        json = null
+                        //start the active scan
+                        ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
+                        ascan_j = new JsonSlurper().parseText(ascan_r.content)
+                        scan_id = null
+                        scan_id = ascan_j.scan
+                        //wait for the active scan to finish
                         i = 0
                         while(i < 100){
-                            response = httpRequest url: zap_url + '/JSON/ascan/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
-                            json = new JsonSlurper().parseText(response.content)
-                            if (i != json.status.toInteger()) println("Progress: ${json.status}%")
-                            i = json.status.toInteger()
-                            response = null
-                            json = null
+                            status_r = null
+                            status_j = null
+                            status_r = httpRequest url: zap_url + '/JSON/ascan/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
+                            jstatus_json = new JsonSlurper().parseText(status_r.content)
+                            if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
+                            i = status_j.status.toInteger()
                             sleep 10
                         }
-
-                        response = httpRequest zap_url + '/XML/core/view/alerts/?apikey=' + ZAP_TOKEN + '&baseurl=' + target_url + '&start=0&count=10'
-                        writeFile (file: "alerts.xml", text: response.content)
+                        //get the active scan results
+                        def results_r = httpRequest zap_url + '/XML/core/view/alerts/?apikey=' + ZAP_TOKEN + '&baseurl=' + target_url + '&start=0&count=10'
+                        writeFile (file: "alerts.xml", text: results_r.content)
                     }
                     archiveArtifacts artifacts: 'alerts.xml'
-                    archiveArtifacts artifacts: 'spider_results.json'
+                    //archiveArtifacts artifacts: 'spider_results.json'
                     }
                 }
             }
