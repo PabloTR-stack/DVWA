@@ -136,19 +136,18 @@ pipeline {
 
                         //response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
                         //writeFile (file: "spider_results.json", text: response.content)
-
+                        sh 'echo "hello"'
                         //start the active scan
                         ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
-                        ascan_j = new JsonSlurper().parseText(ascan_r.content)
                         scan_id = null
-                        scan_id = ascan_j.scan
+                        scan_id = new JsonSlurper().parseText(ascan_r.content).scan
                         //wait for the active scan to finish
                         i = 0
                         while(i < 100){
                             status_r = null
                             status_j = null
                             status_r = httpRequest url: zap_url + '/JSON/ascan/view/status/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id ,quiet:true
-                            jstatus_json = new JsonSlurper().parseText(status_r.content)
+                            status_j = new JsonSlurper().parseText(status_r.content)
                             if (i != status_j.status.toInteger()) println("Progress: ${status_j.status}%")
                             i = status_j.status.toInteger()
                             sleep 10
