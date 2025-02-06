@@ -83,10 +83,10 @@ pipeline {
                     withCredentials([string(credentialsId: 'SQ_TOKEN', variable: 'SQ_TOKEN'), string(credentialsId: 'SQ_URL', variable: 'SQ_URL'), string(credentialsId: 'SQU_TOKEN', variable: 'SQU_TOKEN')]) {
                         script{
                         def qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
-                        def status = new JsonSlurper().parseText(qg).projectStatus.status
+                        def status = new JsonSlurperClassic().parseText(qg).projectStatus.status
                         for (i = 0 ; status != 'OK' && i < 6 ; i++) {
                             qg = sh(returnStdout: true, script: 'curl -s -u '+SQU_TOKEN+': '+SQ_URL+'/api/qualitygates/project_status?projectKey=DVWA')
-                            status = new JsonSlurper().parseText(qg).projectStatus.status
+                            status = new JsonSlurperClassic().parseText(qg).projectStatus.status
                             sleep 10
                             }
                         }
@@ -182,7 +182,7 @@ pipeline {
                             $dd_URL/api/v2/engagements/""")
 
                             //subir los artefactos del pipeline
-                            def engagement_id = new JsonSlurper().parseText(engagement_r).id
+                            def engagement_id = new JsonSlurperClassic().parseText(engagement_r).id
 
                             // Análisis ZAP 
                             def zap_r = sh(returnStdout: true, script:  """curl -o - -X POST \
