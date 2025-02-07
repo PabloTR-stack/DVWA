@@ -106,7 +106,7 @@ pipeline {
             steps{
                 container('docker') {
                     sh 'docker build -f Dockerfile -t jshop .'
-                    sh 'docker run jshop --rm -p 3000:3000'
+                    sh 'docker run jshop -p 3000:3000'
                 }
             }
         }
