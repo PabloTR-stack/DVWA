@@ -97,8 +97,9 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'JSON\' --enableExperimental"
-                    archiveArtifacts artifacts: 'dependency-check-report.json'
+                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'XML\' "
+                    sh "cat dependency-check-report.xml"
+                    archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
         } 
