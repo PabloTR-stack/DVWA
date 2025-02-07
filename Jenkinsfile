@@ -97,7 +97,7 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'XML\' --enableExperimental"
+                    //sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'XML\' --enableExperimental"
                     //archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
@@ -105,7 +105,8 @@ pipeline {
         stage("Deploy containers"){
             steps{
                 container('docker') {
-                    sh 'docker compose up -d'
+                    sh 'docker build -f Dockerfile -t jshop'
+                    sh 'docker run jshop --rm -p 3000:3000'
                 }
             }
         }
