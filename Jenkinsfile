@@ -97,8 +97,13 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    sh 'rm -rf test'
-                    sh "dependency-check.sh -o ${WORKSPACE} -s \'./\' -f \'XML\' --enableExperimental"
+                    sh "dependency-check.sh \
+                        -o ${WORKSPACE} \
+                        -s './' \
+                        -f 'XML' \
+                        --enableExperimental \
+                        --exclude frontend/dist/frontend/assets/public/videos/owasp_promo.vtt \
+                        --exclude ftp/legal.md"               
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
