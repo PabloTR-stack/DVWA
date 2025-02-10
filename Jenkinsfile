@@ -106,7 +106,6 @@ pipeline {
                         -f 'XML' \
                         --noupdate \
                         --enableExperimental \
-                        --enable-native-access=ALL-UNNAMED \
                         --exclude **/*.zip"      
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
