@@ -98,12 +98,14 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'rm -rf test'
-                    sh 'npm install'
-                    sh 'npm install --package-lock'
-                    sh "dependency-check.sh \
+                    //sh 'npm install'
+                    //sh 'npm install --package-lock'
+                    sh 'touch dc.log'
+                    sh "tail -f dc.log | dependency-check.sh \
                         -o ${WORKSPACE} \
                         -s './' \
                         -f 'XML' \
+                        -l 'dc.log' \
                         --noupdate \
                         --enableExperimental \
                         --exclude **/*.zip"      
