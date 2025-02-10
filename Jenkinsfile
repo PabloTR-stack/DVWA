@@ -98,10 +98,13 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'rm -rf test'
+                    sh 'npm install'
+                    sh 'npm install --packge-lock'
                     sh "dependency-check.sh \
                         -o ${WORKSPACE} \
                         -s './' \
                         -f 'XML' \
+                        --noupdate \
                         --enableExperimental \
                         --exclude **/*.zip"    
                         //--exclude data/static/owasp_promo.vtt \
