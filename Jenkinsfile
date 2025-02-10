@@ -106,7 +106,7 @@ pipeline {
                         -s './' \
                         -f 'XML' \
                         -l 'dc.log' \
-                        --pretty-print \
+                        --prettyPrint \
                         --noupdate \
                         --enableExperimental \
                         --exclude **/*.zip"      
