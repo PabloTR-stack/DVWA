@@ -52,7 +52,7 @@ pipeline {
             steps{
                 container('jnlp') {
                     echo 'Downloading DVWA source code...'
-                    git url: "https://github.com/PabloTR-stack/juice-shop.git"
+                    git url: "https://github.com/PabloTR-stack/DVWA.git"
                 }
             }
         }
