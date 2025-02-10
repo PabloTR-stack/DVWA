@@ -102,7 +102,7 @@ pipeline {
                         -o ${WORKSPACE} \
                         -s './' \
                         -f 'XML' \
-                        --enableExperimental "
+                        --enableExperimental"
                         //--exclude data/static/owasp_promo.vtt \
                         //--exclude data/static/legal.md"               
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
@@ -165,6 +165,17 @@ pipeline {
                         //get the active scan results
                         def results_r = httpRequest zap_url + '/XML/core/view/alerts/?apikey=' + ZAP_TOKEN + '&baseurl=' + target_url + '&start=0&count=10'
                         writeFile (file: "alerts.xml", text: results_r.content)
+
+                        def reports_r = httpRequest zap_url + '/JSON/reports/action/generate/'
+                        def reports_r = sh(returnStdout: true, script:  """curl -o - -X GET \
+                            -H 'accept: application/xml' \
+                            -H 'X-ZAP-API-Key: """+ZAP_TOKEN+"""' \
+                            -F 'title=Juice Shop' \
+                            -F 'scan_date=$end_date' \
+                            -F 'template=traditional-xml' \
+                            -F 'sites=$target_url' \
+                            -F 'reportFileName=xmlreport' \
+                            $zap_url/JSON/reports/action/generate/""")
                     }
                     archiveArtifacts artifacts: 'alerts.xml'
                     //archiveArtifacts artifacts: 'spider_results.json'
