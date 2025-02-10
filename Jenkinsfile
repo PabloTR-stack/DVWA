@@ -102,8 +102,8 @@ pipeline {
                         -s './' \
                         -f 'XML' \
                         --enableExperimental \
-                        --exclude frontend/dist/frontend/assets/public/videos/owasp_promo.vtt \
-                        --exclude ftp/legal.md"               
+                        --exclude data/static/owasp_promo.vtt \
+                        --exclude data/static/legal.md"               
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
