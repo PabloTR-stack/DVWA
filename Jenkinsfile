@@ -99,16 +99,15 @@ pipeline {
                 container('dc') {
                     //sh 'rm -rf test'
                     sh 'npm install'
-                    sh 'npm install --packge-lock'
+                    sh 'npm install --package-lock'
                     sh "dependency-check.sh \
                         -o ${WORKSPACE} \
                         -s './' \
                         -f 'XML' \
                         --noupdate \
                         --enableExperimental \
-                        --exclude **/*.zip"    
-                        //--exclude data/static/owasp_promo.vtt \
-                        //--exclude data/static/legal.md       
+                        --enable-native-access=ALL-UNNAMED \
+                        --exclude **/*.zip"      
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
