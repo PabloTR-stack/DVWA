@@ -52,7 +52,7 @@ pipeline {
             steps{
                 container('jnlp') {
                     echo 'Downloading DVWA source code...'
-                    git url: "https://github.com/PabloTR-stack/DVWA.git"
+                    git url: "https://github.com/PabloTR-stack/juice-shop.git"
                 }
             }
         }
@@ -98,15 +98,15 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'rm -rf test'
-                    sh 'npm install'
-                    sh 'npm install --package-lock'
+                    //sh 'npm install'
+                    //sh 'npm install --package-lock'
                     sh 'touch dc.log'
-                    sh "tail -f dc.log | dependency-check.sh \
+                    sh "tail -f dc.log |dependency-check.sh \
                         -o ${WORKSPACE} \
                         -s './' \
                         -f 'XML' \
                         -l 'dc.log' \
-                        --prettyPrint \
+                        --pretty-print \
                         --noupdate \
                         --enableExperimental \
                         --exclude **/*.zip"      
