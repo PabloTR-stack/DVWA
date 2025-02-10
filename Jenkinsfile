@@ -105,8 +105,9 @@ pipeline {
         stage("Deploy containers"){
             steps{
                 container('docker') {
-                    sh 'docker build -f Dockerfile -t jshop .'
-                    sh 'docker run -d -p 3000:3000 jshop'
+                    //sh 'docker build -f Dockerfile -t jshop .'
+                    //sh 'docker run -d -p 3000:3000 jshop'
+                    docker run --rm -p 3000:3000 bkimminich/juice-shop
                 }
             }
         }
@@ -137,7 +138,7 @@ pipeline {
 
                         //response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
                         //writeFile (file: "spider_results.json", text: response.content)
-                        sh 'echo "hello"'
+
                         //start the active scan
                         ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
                         scan_id = null
