@@ -173,9 +173,9 @@ pipeline {
                             -H 'X-ZAP-API-Key: """+ZAP_TOKEN+"""' \
                             -F 'title=Juice Shop' \
                             -F 'scan_date=$end_date' \
-                            -F 'template=traditional-xml' \
+                            -F 'template=traditional-json' \
                             -F 'sites=$target_url' \
-                            -F 'reportFileName=xmlreport' \
+                            -F 'reportFileName=jsonreport' \
                             $zap_url/JSON/reports/action/generate/""")
                             echo reports_r
                     }
