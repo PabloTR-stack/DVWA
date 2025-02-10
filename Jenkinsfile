@@ -98,8 +98,8 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'rm -rf test'
-                    //sh 'npm install'
-                    //sh 'npm install --package-lock'
+                    sh 'npm install'
+                    sh 'npm install --package-lock'
                     sh 'touch dc.log'
                     sh "tail -f dc.log | dependency-check.sh \
                         -o ${WORKSPACE} \
