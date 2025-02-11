@@ -160,8 +160,6 @@ pipeline {
                             sleep 10
                         }
                         //get the active scan results
-                        def results_r = httpRequest zap_url + '/XML/core/view/alerts/?apikey=' + ZAP_TOKEN + '&baseurl=' + target_url + '&start=0&count=10'
-                        writeFile (file: "alerts.xml", text: results_r.content)
 
                         def reports_r = sh(returnStdout: true, script:  """curl -o - -X GET \
                             -H 'accept: application/xml' \
