@@ -189,15 +189,16 @@ pipeline {
                             def dd_URL = "http://defectdojo-django.s-dm.svc.cluster.local:80"
 
                             //crear engagement para el dia de hoy
-                            def engagement_j = "{\"tags\":[\"TEST\"],\"name\": \"SAST/SCA/DAST reports from ${LocalDateTime.now()}\",\"description\": \"Reports from SonarQube, OWASP DC and OWASP ZAP respectively\",\"target_start\":\"$end_date\",\"product\":$product_id,\"target_end\":\"$end_date\",\"engagement_type\":\"CI/CD\"}"
-                            def engagement_r = sh(returnStdout: true, script:  """curl -o - -X POST \
-                            -H 'content-type: application/json' \
-                            -H 'Authorization: Token $API_KEY' \
-                            -d '$engagement_j' \
-                            $dd_URL/api/v2/engagements/""")
+                            //def engagement_j = "{\"tags\":[\"TEST\"],\"name\": \"SAST/SCA/DAST reports from ${LocalDateTime.now()}\",\"description\": \"Reports from SonarQube, OWASP DC and OWASP ZAP respectively\",\"target_start\":\"$end_date\",\"product\":$product_id,\"target_end\":\"$end_date\",\"engagement_type\":\"CI/CD\"}"
+                            //def engagement_r = sh(returnStdout: true, script:  """curl -o - -X POST \
+                            //-H 'content-type: application/json' \
+                            //-H 'Authorization: Token $API_KEY' \
+                            //-d '$engagement_j' \
+                            //$dd_URL/api/v2/engagements/""")
 
                             //subir los artefactos del pipeline
-                            def engagement_id = new JsonSlurperClassic().parseText(engagement_r).id
+                            //def engagement_id = new JsonSlurperClassic().parseText(engagement_r).id
+                            def engagement_id = 288
 
                             // Análisis ZAP 
                             def zap_r = sh(returnStdout: true, script:  """curl -o - -X POST \
