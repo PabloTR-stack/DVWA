@@ -98,18 +98,14 @@ pipeline {
             steps{
                 container('dc') {
                     //sh 'rm -rf test'
-                    //sh 'npm install'
-                    //sh 'npm install --package-lock'
-                    sh 'touch dc.log'
-                    sh "tail -f dc.log |dependency-check.sh \
-                        -o ${WORKSPACE} \
-                        -s './' \
-                        -f 'XML' \
-                        -l 'dc.log' \
-                        --prettyPrint \
+                    sh 'npm install'
+                    sh 'npm install --package-lock'
+                    sh 'dependency-check.sh \
+                        --scan . \
+                        -f XML \
                         --noupdate \
-                        --enableExperimental \
-                        --exclude **/*.zip"      
+                        --exclude "**/*.zip"'
+                        //enableExperimental \     
                     archiveArtifacts artifacts: 'dependency-check-report.xml'
                 }
             }
