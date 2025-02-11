@@ -176,8 +176,9 @@ pipeline {
                             $zap_url/OTHER/core/other/xmlreport/""")
                             sh 'echo "'+reports_r+'"'
                             //-F 'template=traditional-json' 
+                            writeFile (file: "zap_report.xml", text: reports_r)  
                     }
-                    archiveArtifacts artifacts: 'alerts.xml'
+                    archiveArtifacts artifacts: 'zap_report.xml'
                     }
                 }
             }
@@ -214,7 +215,7 @@ pipeline {
                             -F 'scan_date=$end_date' \
                             -F 'engagement_end_date=$end_date' \
                             -F 'product_name=DVWA' \
-                            -F 'file=@alerts.xml;type=application/xml' \
+                            -F 'file=@zap_report.xml;type=application/xml' \
                             -F 'scan_type=ZAP Scan' \
                             $dd_URL/api/v2/import-scan/""")
 
