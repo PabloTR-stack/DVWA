@@ -115,6 +115,7 @@ pipeline {
                     //sh 'docker build -f Dockerfile -t jshop .'
                     //sh 'docker run -d -p 3000:3000 jshop'
                     sh 'docker run --rm -d -p 3000:3000 bkimminich/juice-shop'
+                    sh 'docker ps'
                 }
             }
         }
@@ -144,7 +145,7 @@ pipeline {
                         }   
 
                         //start the active scan
-                        ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
+                        ascan_r = httpRequest zap_url+'/JSON/ascan/action/scan/?apikey='+ZAP_TOKEN+'&url='+target_url+'&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
                         scan_id = null
                         scan_id = new JsonSlurperClassic().parseText(ascan_r.content).scan
                         //wait for the active scan to finish
