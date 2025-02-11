@@ -171,7 +171,7 @@ pipeline {
                             -F 'sites=$target_url' \
                             -F 'reportFileName=jsonreport' \
                             $zap_url/JSON/reports/action/generate/""")
-                            echo reports_r
+                            sh 'echo "'+reports_r+'"'
                     }
                     archiveArtifacts artifacts: 'alerts.xml'
                     }
