@@ -97,9 +97,8 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps{
                 container('dc') {
-                    //sh 'rm -rf test'
-                    sh 'npm install'
-                    sh 'npm install --package-lock'
+                    //sh 'npm install'
+                    //sh 'npm install --package-lock'
                     sh 'dependency-check.sh \
                         --scan . \
                         -f XML \
@@ -113,10 +112,9 @@ pipeline {
         stage("Deploy containers"){
             steps{
                 container('docker') {
-                    sh 'docker build -f Dockerfile -t jshop .'
-                    sh 'docker run -d -p 3000:3000 jshop'
-                    //sh 'docker run --rm -d -p 3000:3000 bkimminich/juice-shop'
-                    //sh 'docker ps'
+                    //sh 'docker build -f Dockerfile -t jshop .'
+                    //sh 'docker run -d -p 3000:3000 jshop'
+                    sh 'docker run --rm -d -p 3000:3000 bkimminich/juice-shop'
                 }
             }
         }
@@ -144,9 +142,6 @@ pipeline {
                             i = status_j.status.toInteger()
                             //sleep 10
                         }   
-
-                        //response = httpRequest zap_url + '/JSON/spider/view/results/?apikey=' + ZAP_TOKEN + '&scanId=' + scan_id
-                        //writeFile (file: "spider_results.json", text: response.content)
 
                         //start the active scan
                         ascan_r = httpRequest zap_url + '/JSON/ascan/action/scan/?apikey=' + ZAP_TOKEN + '&url=' + target_url + '&recurse=true&inScopeOnly=&scanPolicyName=&method=&postData=&contextId='
@@ -179,7 +174,6 @@ pipeline {
                             echo reports_r
                     }
                     archiveArtifacts artifacts: 'alerts.xml'
-                    //archiveArtifacts artifacts: 'spider_results.json'
                     }
                 }
             }
