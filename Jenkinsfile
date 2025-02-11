@@ -165,7 +165,7 @@ pipeline {
                             def sdf = new SimpleDateFormat("yyyy-MM-dd")
                             def end_date = sdf.format(date)
                         def reports_r = sh(returnStdout: true, script:  """curl -o - -X GET \
-                            -H 'accept: application/xml' \
+                            -H 'accept: */*' \
                             -H 'X-ZAP-API-Key: """+ZAP_TOKEN+"""' \
                             -F 'title=Juice Shop' \
                             -F 'scan_date=$end_date' \
