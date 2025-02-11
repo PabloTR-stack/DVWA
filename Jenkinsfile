@@ -172,7 +172,7 @@ pipeline {
                             -F 'sites=$target_url' \
                             -F 'reportFileName=jsonreport' \
                             -F 'code=$scan_id' \
-                            -F 'message=DAST analysis of Jshop'
+                            -F 'message=DAST analysis of Jshop' \
                             $zap_url/OTHER/core/other/xmlreport/""")
                             sh 'echo "'+reports_r+'"'
                             //-F 'template=traditional-json' 
