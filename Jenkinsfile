@@ -169,11 +169,13 @@ pipeline {
                             -H 'X-ZAP-API-Key: """+ZAP_TOKEN+"""' \
                             -F 'title=Juice Shop' \
                             -F 'scan_date=$end_date' \
-                            -F 'template=traditional-json' \
                             -F 'sites=$target_url' \
                             -F 'reportFileName=jsonreport' \
-                            $zap_url/JSON/reports/action/generate/""")
+                            -F 'code=$scan_id' \
+                            -F 'message=DAST analysis of Jshop'
+                            $zap_url/OTHER/core/other/xmlreport/""")
                             sh 'echo "'+reports_r+'"'
+                            //-F 'template=traditional-json' 
                     }
                     archiveArtifacts artifacts: 'alerts.xml'
                     }
